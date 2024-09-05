@@ -1,66 +1,156 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Json Transformer
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This project is a Laravel-based solution for handling incoming JSON requests, transforming them into complex objects, and returning a structured JSON response. It demonstrates the use of design patterns, request validation, and a service-oriented architecture.
 
-## About Laravel
+## Key Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Factory Design Pattern**: Utilized to create complex objects from the incoming JSON data. This approach ensures a modular and maintainable codebase.
+- **Dependency Injection**: Dependency injection is used to provide a service to the controller via the constructor, reducing coupling and ensuring a clean separation of concerns.
+- **Request Validation**: Custom Laravel Requests are used to validate the structure of the incoming JSON payload, ensuring that the endpoint only processes valid data.
+- **Comprehensive Testing**: Feature tests are implemented to guarantee the correct functionality of the API and its responses.
+- **Fractal & Transformer**: The Fractal library, along with a custom transformer, is used to transform the complex object created by the Factory design pattern into the output JSON.
+- **Service Layer**: Business logic is encapsulated in services to keep controllers lean and focused solely on handling requests and responses.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## API Endpoints
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### POST `/api/theEasyOne/transformJson`
 
-## Learning Laravel
+- **Request**: A JSON payload that conforms to the expected structure.
+- **Response**: A transformed JSON object derived from the input.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Example Request:**
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```json
+{
+  "Records": [
+    {
+      "eventVersion": "1.0",
+      "ses": {
+        "receipt": {
+          "timestamp": "2015-09-11T20:32:33.936Z",
+          "processingTimeMillis": 222,
+          "recipients": [
+            "recipient@example.com"
+          ],
+          "spamVerdict": {
+            "status": "PASS"
+          },
+          "virusVerdict": {
+            "status": "PASS"
+          },
+          "spfVerdict": {
+            "status": "PASS"
+          },
+          "dkimVerdict": {
+            "status": "PASS"
+          },
+          "dmarcVerdict": {
+            "status": "PASS"
+          },
+          "dmarcPolicy": "reject",
+          "action": {
+            "type": "SNS",
+            "topicArn": "arn:aws:sns:us-east-1:012345678912:example-topic"
+          }
+        },
+        "mail": {
+          "timestamp": "2015-09-11T20:32:33.936Z",
+          "source": "61967230-7A45-4A9D-BEC9-87CBCF2211C9@example.com",
+          "messageId": "d6iitobk75ur44p8kdnnp7g2n800",
+          "destination": [
+            "recipient@example.com"
+          ],
+          "headersTruncated": false,
+          "headers": [
+            {
+              "name": "Return-Path",
+              "value": "<0000014fbe1c09cf-7cb9f704-7531-4e53-89a1-5fa9744f5eb6-000000@amazonses.com>"
+            },
+            {
+              "name": "Received",
+              "value": "from a9-183.smtp-out.amazonses.com (a9-183.smtp-out.amazonses.com [54.240.9.183]) by inbound-smtp.us-east-1.amazonaws.com with SMTP id d6iitobk75ur44p8kdnnp7g2n800 for recipient@example.com; Fri, 11 Sep 2015 20:32:33 +0000 (UTC)"
+            },
+            {
+              "name": "DKIM-Signature",
+              "value": "v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=ug7nbtf4gccmlpwj322ax3p6ow6yfsug; d=amazonses.com; t=1442003552; h=From:To:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Date:Message-ID:Feedback-ID; bh=DWr3IOmYWoXCA9ARqGC/UaODfghffiwFNRIb2Mckyt4=; b=p4ukUDSFqhqiub+zPR0DW1kp7oJZakrzupr6LBe6sUuvqpBkig56UzUwc29rFbJF hlX3Ov7DeYVNoN38stqwsF8ivcajXpQsXRC1cW9z8x875J041rClAjV7EGbLmudVpPX 4hHst1XPyX5wmgdHIhmUuh8oZKpVqGi6bHGzzf7g="
+            },
+            {
+              "name": "From",
+              "value": "sender@example.com"
+            },
+            {
+              "name": "To",
+              "value": "recipient@example.com"
+            },
+            {
+              "name": "Subject",
+              "value": "Example subject"
+            },
+            {
+              "name": "MIME-Version",
+              "value": "1.0"
+            },
+            {
+              "name": "Content-Type",
+              "value": "text/plain; charset=UTF-8"
+            },
+            {
+              "name": "Content-Transfer-Encoding",
+              "value": "7bit"
+            },
+            {
+              "name": "Date",
+              "value": "Fri, 11 Sep 2015 20:32:32 +0000"
+            },
+            {
+              "name": "Message-ID",
+              "value": "<61967230-7A45-4A9D-BEC9-87CBCF2211C9@example.com>"
+            },
+            {
+              "name": "X-SES-Outgoing",
+              "value": "2015.09.11-54.240.9.183"
+            },
+            {
+              "name": "Feedback-ID",
+              "value": "1.us-east-1.Krv2FKpFdWV+KUYw3Qd6wcpPJ4Sv/pOPpEPSHn2u2o4=:AmazonSES"
+            }
+          ],
+          "commonHeaders": {
+            "returnPath": "0000014fbe1c09cf-7cb9f704-7531-4e53-89a1-5fa9744f5eb6-000000@amazonses.com",
+            "from": [
+              "sender@example.com"
+            ],
+            "date": "Fri, 11 Sep 2015 20:32:32 +0000",
+            "to": [
+              "recipient@example.com"
+            ],
+            "messageId": "<61967230-7A45-4A9D-BEC9-87CBCF2211C9@example.com>",
+            "subject": "Example subject"
+          }
+        }
+      },
+      "eventSource": "aws:ses"
+    }
+  ]
+}
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Example Response:**
 
-## Laravel Sponsors
+```json
+{
+  "spam": true,
+  "virus": true,
+  "dns": true,
+  "mes": "September",
+  "retrasado": false,
+  "emisor": "61967230-7A45-4A9D-BEC9-87CBCF2211C9",
+  "receptor": ["recipient@example.com"]
+}
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Installation
 
-### Premium Partners
+```bash
+git clone https://github.com/JuanUrZa/laravel-json-transformer.git
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
