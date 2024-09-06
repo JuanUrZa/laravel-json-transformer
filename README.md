@@ -145,7 +145,9 @@ This project is a Laravel-based solution for handling incoming JSON requests, tr
   "mes": "September",
   "retrasado": false,
   "emisor": "61967230-7A45-4A9D-BEC9-87CBCF2211C9",
-  "receptor": ["recipient@example.com"]
+  "receptor": [
+    "recipient"
+  ]
 }
 ```
 
